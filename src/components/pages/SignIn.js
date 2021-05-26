@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import LoginImage from '../../images/bkg1.jpeg'
 import "./SignIn.css";
+import { API_SIGN_IN } from '../../constants/ApiConstants.js'
+import { callPost } from '../../service/NetworkService'
 
 export default function SignIn() {
-
   const handleSignIn = () => {
-    alert('Sign in')
+    const body = {
+      email: "admin@jukebox.com",
+      password: "password"
+    }
+    const { responseCode, responseBody } = callPost(API_SIGN_IN, null, body)
+    console.log("responseCode " + responseCode)
   }
 
   return (
