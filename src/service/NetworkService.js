@@ -1,8 +1,7 @@
-import React from 'react'
 import axios from 'axios'
 
-export const callPost = (url, header, body) => {
-    axios
+export const callPost = (url, header, body) => new Promise ((resolve, reject) => {
+     axios
     .post(url, body)
     .then(function(response){
         console.log("Post api success")
@@ -10,15 +9,14 @@ export const callPost = (url, header, body) => {
             responseCode: response.status,
             responseBody: response.data.body
         }
-        return postData
+        resolve(postData)
     })
     .catch(function(error){
         console.log("Error calling post api: " + url)
-        console.error(error)
         const errorData = {
             responseCode: error.status,
             responseBody: error.data.body
         }
-        return errorData
+        reject(errorData)
     })
-}
+});

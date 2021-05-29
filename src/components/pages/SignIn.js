@@ -4,16 +4,26 @@ import "./SignIn.css";
 import { API_SIGN_IN } from '../../constants/ApiConstants.js'
 import { callPost } from '../../service/NetworkService'
 
-export default function SignIn() {
-  const handleSignIn = () => {
+function SignIn() {
+
+  const [ responseCode, setResponseCode ] = useState(0)
+
+  useEffect(() => {
+    if(responseCode !== 0){
+      console.log("API response received and updated to responseCode variable")
+    }
+  }, [ responseCode ])
+
+  const handleSignIn = async () => {
+    console.log(`Sign in function is called, responseCode = ${responseCode}`)
     const body = {
       email: "admin@jukebox.com",
       password: "password"
     }
-    const { responseCode, responseBody } = callPost(API_SIGN_IN, null, body)
-    console.log("responseCode " + responseCode)
+    const apiData = await callPost(API_SIGN_IN, null, body)
+    console.log(apiData)
+    setResponseCode(apiData.responseCode)
   }
-
   return (
     <div className="sign-in-container">
       <img src={LoginImage} alt="login-music-cover" className="login-cover" />
@@ -35,3 +45,5 @@ export default function SignIn() {
     </div>
   );
 }
+
+export default SignIn
