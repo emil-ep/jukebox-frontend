@@ -14,9 +14,9 @@ export const callPost = (url, header, body) => new Promise ((resolve, reject) =>
     .catch(function(error){
         console.log("Error calling post api: " + url)
         const errorData = {
-            responseCode: error.status,
-            responseBody: error.data.body
+            responseCode: error.response.status,
+            responseBody: error.response.data
         }
-        reject(errorData)
+        resolve(errorData)
     })
 });
