@@ -4,13 +4,11 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 
 function Home() {
+
+    console.log("Home component")
     return (
       <>
-        <Router>
-          <Switch>
-            {/* <Route path="/" component={}></Route> */}
-          </Switch>
-        </Router>
+        <div>home</div>
       </>
     );
 }

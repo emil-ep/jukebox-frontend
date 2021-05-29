@@ -20,7 +20,6 @@ function SignIn() {
       switch (response.responseCode) {
         case 200:
           history.push("/home")
-          // alert.success("Sign in Success")
           break;
         default: 
           alert.error(response.responseBody.body)
@@ -62,7 +61,7 @@ function SignIn() {
           />
         </div>
         <div className="sign-in-btn-container">
-          <button className="sign-in-btn" onClick={handleSignIn}>
+          <button type="submit"className="sign-in-btn" onClick={handleSignIn}>
             Sign In
           </button>
         </div>

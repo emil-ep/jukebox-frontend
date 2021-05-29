@@ -17,6 +17,7 @@ const options = {
 }
 
 const Root = () => (
+  
   <AlertProvider template={AlertTemplate} {...options}>
     <App />
   </AlertProvider>
