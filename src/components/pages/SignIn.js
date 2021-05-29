@@ -4,10 +4,12 @@ import "./SignIn.css";
 import { API_SIGN_IN } from '../../constants/ApiConstants.js'
 import { callPost } from '../../service/NetworkService'
 import { useAlert } from 'react-alert'
+import { useHistory } from 'react-router-dom'
 
 function SignIn() {
 
   const alert = useAlert()
+  const history = useHistory()
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ response, setResponse ] = useState(null)
@@ -17,7 +19,8 @@ function SignIn() {
     if(response !== null){
       switch (response.responseCode) {
         case 200:
-          alert.success("Sign in Success")
+          history.push("/home")
+          // alert.success("Sign in Success")
           break;
         default: 
           alert.error(response.responseBody.body)

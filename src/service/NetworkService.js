@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { createErrorResponse } from '../utility/ResponseUtility'
 
 export const callPost = (url, header, body) => new Promise ((resolve, reject) => {
      axios
@@ -13,10 +14,7 @@ export const callPost = (url, header, body) => new Promise ((resolve, reject) =>
     })
     .catch(function(error){
         console.log("Error calling post api: " + url)
-        const errorData = {
-            responseCode: error.response.status,
-            responseBody: error.response.data
-        }
+        const errorData = createErrorResponse(error)
         resolve(errorData)
     })
 });
