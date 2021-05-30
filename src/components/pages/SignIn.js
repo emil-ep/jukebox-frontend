@@ -24,6 +24,7 @@ function SignIn() {
           break;
         default: 
           alert.error(response.responseBody.body)
+          localStorage.removeItem('user-token')
           break;
       }
     }

@@ -5,11 +5,14 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 function Home(props) {
 
-    const homeText = props.location.state.token
     console.log("Home component")
     return (
       <>
-        <div>{homeText}</div>
+        <nav className="navbar">
+          <div className="navbar-container">
+
+          </div>
+        </nav>
       </>
     );
 }
