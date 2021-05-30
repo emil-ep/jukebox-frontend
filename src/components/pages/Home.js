@@ -3,12 +3,13 @@ import './Home.css'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 
-function Home() {
+function Home(props) {
 
+    const homeText = props.location.state.token
     console.log("Home component")
     return (
       <>
-        <div>home</div>
+        <div>{homeText}</div>
       </>
     );
 }

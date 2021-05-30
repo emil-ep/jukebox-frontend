@@ -19,7 +19,8 @@ function SignIn() {
     if(response !== null){
       switch (response.responseCode) {
         case 200:
-          history.push("/home")
+          localStorage.setItem('user-token', response.responseBody.token)
+          history.push("/home", { token : localStorage.getItem("user-token")})
           break;
         default: 
           alert.error(response.responseBody.body)
