@@ -1,20 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Home.css'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Navbar from '../Navbar'
 
 
 function Home(props) {
 
-    console.log("Home component")
-    return (
-      <>
-        <nav className="navbar">
-          <div className="navbar-container">
-
-          </div>
-        </nav>
-      </>
-    );
+  return (
+  <>
+  <Router>
+    <Navbar>
+      <Switch>
+        <Route path="/" exact component={Home}></Route>
+      </Switch>
+    </Navbar>
+  </Router>
+  </>
+  );
 }
 
 export default Home
