@@ -4,23 +4,26 @@ import "./SignIn.css";
 import { API_SIGN_IN } from '../../constants/ApiConstants.js'
 import { callPost } from '../../service/NetworkService'
 import { useAlert } from 'react-alert'
+import { useHistory } from 'react-router-dom'
 
 function SignIn() {
 
   const alert = useAlert()
+  let history = useHistory()
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ response, setResponse ] = useState(null)
 
   useEffect(() => {
-    console.log("Use effect is called")
     if(response !== null){
       switch (response.responseCode) {
         case 200:
-          alert.success("Sign in Success")
+          localStorage.setItem('user-token', response.responseBody.token)
+          history.push("/home", { token : localStorage.getItem("user-token")})
           break;
         default: 
           alert.error(response.responseBody.body)
+          localStorage.removeItem('user-token')
           break;
       }
     }
@@ -59,7 +62,7 @@ function SignIn() {
           />
         </div>
         <div className="sign-in-btn-container">
-          <button className="sign-in-btn" onClick={handleSignIn}>
+          <button type="submit"className="sign-in-btn" onClick={handleSignIn}>
             Sign In
           </button>
         </div>
