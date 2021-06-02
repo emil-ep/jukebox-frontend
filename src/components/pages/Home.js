@@ -1,17 +1,20 @@
-import React from 'react'
 import './Home.css'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-
+import Navbar from '../Navbar'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import SignIn from './SignIn';
+import Albums from './Albums';
 
 function Home(props) {
 
-    const homeText = props.location.state.token
-    console.log("Home component")
-    return (
-      <>
-        <div>{homeText}</div>
-      </>
-    );
+  return (
+    <Router>
+      <Navbar/>
+        <Route path="/profile" component={SignIn}></Route>
+        <Route path="/albums" component={Albums}></Route>
+        <Route path="/artists" component={SignIn}></Route>
+    
+    </Router>
+  );
 }
 
 export default Home
