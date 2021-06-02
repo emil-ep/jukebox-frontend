@@ -9,13 +9,12 @@ import { useHistory } from 'react-router-dom'
 function SignIn() {
 
   const alert = useAlert()
-  const history = useHistory()
+  let history = useHistory()
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ response, setResponse ] = useState(null)
 
   useEffect(() => {
-    console.log("Use effect is called")
     if(response !== null){
       switch (response.responseCode) {
         case 200:
