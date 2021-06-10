@@ -1,14 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import UserIcon from '../../images/user-icon.png'
-import { callPatch, callPost } from '../../service/NetworkService';
+import { callPatch, callGet } from '../../service/NetworkService';
 import './Profile.css'
-import { API_PROFILE_UPDATE } from '../../constants/ApiConstants.js'
+import { API_PROFILE_UPDATE, API_FETCH_PROFILE } from '../../constants/ApiConstants.js'
 import { useAlert } from 'react-alert'
+import { createAuthHeader } from '../../utility/RequestUtil'
 
 function Profile() {
   const alert = useAlert()
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("")
+  const [response, setResponse] = useState(null);
+
+
+useEffect(() => {
+  if (response === null) callFetchProfileAPI()
+  else{
+    setFirstName(response.responseBody.firstName)
+    setLastName(response.responseBody.lastName)
+    setEmail(response.responseBody.email)
+  }
+}, [response])
+
+const callFetchProfileAPI = async () => {
+  let fetchProfileUrl = API_FETCH_PROFILE.replace("{id}", "1")
+  console.log(`fetchProfileUrl = ${fetchProfileUrl}`);
+  const apiData = await callGet(fetchProfileUrl, createAuthHeader())
+  console.log(apiData)
+  setResponse(apiData)
+}
+
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -24,13 +46,10 @@ function Profile() {
       id: 1,
       firstName: firstName,
       lastName: lastName,
-      userType: "JUKEBOX_ADMIN"
-    }
-    const header = {
-      "Authorization": `Bearer ${localStorage.getItem("user-token")}`,
+      userType: "JUKEBOX_ADMIN",
     };
     console.log(API_PROFILE_UPDATE)
-    const apiData = await callPatch(API_PROFILE_UPDATE, header, body)
+    const apiData = await callPatch(API_PROFILE_UPDATE, createAuthHeader(), body)
     if(apiData.responseCode === 200){
       alert.success("Profile updated")
     }else{
@@ -51,15 +70,21 @@ function Profile() {
               type="text"
               className="user-input"
               onChange={handleFirstNameChange}
+              value={firstName}
             />
           </div>
           <div className="property-container">
             <label className="user-label">Last Name</label>
-            <input type="text" className="user-input" onChange={handleLastNameChange}/>
+            <input
+              type="text"
+              className="user-input"
+              onChange={handleLastNameChange}
+              value={lastName}
+            />
           </div>
           <div className="property-container">
             <label className="user-label">Email</label>
-            <input type="text" className="user-input" />
+            <input type="text" className="user-input" defaultValue={email} disabled={true} />
           </div>
           <div className="property-container">
             <label className="user-label">Password</label>
