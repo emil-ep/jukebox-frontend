@@ -1,61 +1,81 @@
-import React, { useEffect, useState } from 'react'
-import UserIcon from '../../images/user-icon.png'
-import { callPatch, callGet } from '../../service/NetworkService';
-import './Profile.css'
-import { API_PROFILE_UPDATE, API_FETCH_PROFILE } from '../../constants/ApiConstants.js'
-import { useAlert } from 'react-alert'
-import { createAuthHeader } from '../../utility/RequestUtil'
+import React, { useEffect, useState } from "react";
+import UserIcon from "../../images/user-icon.png";
+import { callPatch, callGet } from "../../service/NetworkService";
+import "./Profile.css";
+import {
+  API_PROFILE_UPDATE,
+  API_FETCH_PROFILE,
+} from "../../constants/ApiConstants.js";
+import { useAlert } from "react-alert";
+import { createAuthHeader } from "../../utility/RequestUtil";
 
 function Profile() {
-  const alert = useAlert()
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("")
+  const alert = useAlert();
+  const [inputFields, setInputFields] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
   const [response, setResponse] = useState(null);
 
+  useEffect(() => {
+    if (response === null) callFetchProfileAPI();
+    else {
+      setInputFields({
+        firstName: response.responseBody.firstName,
+        lastName: response.responseBody.lastName,
+        email: response.responseBody.email,
+      });
+    }
+  }, [response]);
 
-useEffect(() => {
-  if (response === null) callFetchProfileAPI()
-  else{
-    setFirstName(response.responseBody.firstName)
-    setLastName(response.responseBody.lastName)
-    setEmail(response.responseBody.email)
-  }
-}, [response])
-
-const callFetchProfileAPI = async () => {
-  let fetchProfileUrl = API_FETCH_PROFILE.replace("{id}", "1")
-  console.log(`fetchProfileUrl = ${fetchProfileUrl}`);
-  const apiData = await callGet(fetchProfileUrl, createAuthHeader())
-  console.log(apiData)
-  setResponse(apiData)
-}
-
+  const callFetchProfileAPI = async () => {
+    let fetchProfileUrl = API_FETCH_PROFILE.replace("{id}", "1");
+    console.log(`fetchProfileUrl = ${fetchProfileUrl}`);
+    const apiData = await callGet(fetchProfileUrl, createAuthHeader());
+    console.log(apiData);
+    setResponse(apiData);
+  };
 
   const handleFirstNameChange = (event) => {
-    setFirstName(event.target.value);
-    console.log(firstName)
+    setInputFields({
+      firstName: event.target.value,
+      lastName: inputFields.lastName,
+      email: inputFields.email,
+    });
+    // console.log(firstName)
   };
 
   const handleLastNameChange = (event) => {
-    setLastName(event.target.value);
-  }
+    setInputFields({
+      firstName: inputFields.firstName,
+      lastName: event.target.value,
+      email: inputFields.email,
+    });
+  };
 
-  const handleProfileSubmit =  async () => {
+  const handleProfileSubmit = async () => {
+    console.log(
+      `firstName = ${inputFields.firstName} \n lastName = ${inputFields.lastName}`
+    );
     const body = {
       id: 1,
-      firstName: firstName,
-      lastName: lastName,
+      firstName: inputFields.firstName,
+      lastName: inputFields.lastName,
       userType: "JUKEBOX_ADMIN",
     };
-    console.log(API_PROFILE_UPDATE)
-    const apiData = await callPatch(API_PROFILE_UPDATE, createAuthHeader(), body)
-    if(apiData.responseCode === 200){
-      alert.success("Profile updated")
-    }else{
-      alert.error("Profile update failed")
+    console.log(API_PROFILE_UPDATE);
+    const apiData = await callPatch(
+      API_PROFILE_UPDATE,
+      createAuthHeader(),
+      body
+    );
+    if (apiData.responseCode === 200) {
+      alert.success("Profile updated");
+    } else {
+      alert.error("Profile update failed");
     }
-  }
+  };
 
   return (
     <>
@@ -70,7 +90,7 @@ const callFetchProfileAPI = async () => {
               type="text"
               className="user-input"
               onChange={handleFirstNameChange}
-              value={firstName}
+              value={inputFields.firstName}
             />
           </div>
           <div className="property-container">
@@ -79,12 +99,17 @@ const callFetchProfileAPI = async () => {
               type="text"
               className="user-input"
               onChange={handleLastNameChange}
-              value={lastName}
+              value={inputFields.lastName}
             />
           </div>
           <div className="property-container">
             <label className="user-label">Email</label>
-            <input type="text" className="user-input" defaultValue={email} disabled={true} />
+            <input
+              type="text"
+              className="user-input"
+              defaultValue={inputFields.email}
+              disabled={true}
+            />
           </div>
           <div className="property-container">
             <label className="user-label">Password</label>
@@ -105,4 +130,4 @@ const callFetchProfileAPI = async () => {
   );
 }
 
-export default Profile
+export default Profile;
