@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UserIcon from "../../images/user-icon.png";
+import CamIcon from "../../images/cam-icon.png"
 import { callPatch, callGet } from "../../service/NetworkService";
 import "./Profile.css";
 import {
@@ -16,6 +17,7 @@ function Profile() {
     lastName: "",
     email: "",
   });
+  let [profilePicUrl, setProfilePicUrl] = useState(null);
   const [response, setResponse] = useState(null);
 
   useEffect(() => {
@@ -26,6 +28,12 @@ function Profile() {
         lastName: response.responseBody.lastName,
         email: response.responseBody.email,
       });
+      if(response.responseBody.profilePic !== null){
+        setProfilePicUrl(response.responseBody.profilePic.downloadUri);
+        console.log(profilePicUrl)
+      }else{
+        setProfilePicUrl(UserIcon)
+      }
     }
   }, [response]);
 
@@ -54,6 +62,10 @@ function Profile() {
     });
   };
 
+  const handleProfilePicUpdate = () => {
+
+  }
+
   const handleProfileSubmit = async () => {
     console.log(
       `firstName = ${inputFields.firstName} \n lastName = ${inputFields.lastName}`
@@ -80,8 +92,13 @@ function Profile() {
   return (
     <>
       <div className="profile-container">
-        <div className="profile-pic-container">
-          <img src={UserIcon} alt="user-pic-icon" className="profile-pic"></img>
+        <div className="pic-container">
+          <div className="profile-pic-container">
+          <img src={profilePicUrl} alt="user-pic-icon" className="profile-pic"></img>
+          <img src={CamIcon} className="cam-icon" onClick={handleProfilePicUpdate}></img>
+          </div>
+          
+          
         </div>
         <div className="user-detail-container">
           <div className="property-container">
