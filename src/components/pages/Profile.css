@@ -1,0 +1,69 @@
+.user-label{
+    padding: 5px;
+}
+
+.user-input{
+    padding: 5px;
+}
+.property-container{
+    margin: 5px;
+    width: 100%;
+    display: flex;
+}
+
+.user-label{
+    display: inline-block;
+    width: 50%;
+    text-align: end;
+}
+.user-input{
+    display: inline-block;
+    width: 10%;
+}
+
+.user-detail-container{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-row: auto;
+}
+
+.save-btn-container{
+    margin-top: 10px;
+   display: flex;
+   justify-content: center;
+}
+.profile-container{
+    padding-top: 100px;
+    min-height: 100vh;
+    background-color: #b5b8bd;
+}
+
+.pic-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.profile-pic-container{
+    height: 200px;
+    width: 200px;
+    position: relative;
+}
+
+.profile-pic{
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+}
+
+.cam-icon{
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    background-color: white;
+}
