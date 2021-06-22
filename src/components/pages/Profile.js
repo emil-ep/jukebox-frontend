@@ -62,8 +62,17 @@ function Profile() {
     });
   };
 
-  const handleProfilePicUpdate = () => {
+  const buildFileSelector = () => {
+    const fileSelector = document.createElement('input');
+    fileSelector.setAttribute('type', 'file');
+    fileSelector.setAttribute('multiple', 'multiple');
+    fileSelector.click();
+  }
 
+  const handleProfilePicUpdate = (event) => {
+    alert.error("Upload profile picture")
+    event.preventDefault();
+    buildFileSelector();
   }
 
   const handleProfileSubmit = async () => {
@@ -94,11 +103,17 @@ function Profile() {
       <div className="profile-container">
         <div className="pic-container">
           <div className="profile-pic-container">
-          <img src={profilePicUrl} alt="user-pic-icon" className="profile-pic"></img>
-          <img src={CamIcon} className="cam-icon" onClick={handleProfilePicUpdate}></img>
+            <img
+              src={profilePicUrl}
+              alt="user-pic-icon"
+              className="profile-pic"
+            ></img>
+            <img
+              src={CamIcon}
+              className="cam-icon"
+              onClick={handleProfilePicUpdate}
+            ></img>
           </div>
-          
-          
         </div>
         <div className="user-detail-container">
           <div className="property-container">
