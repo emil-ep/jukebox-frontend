@@ -48,3 +48,22 @@ export const callPatch = (url, header, body) => new Promise ((resolve, reject) =
         resolve(errorData)
     })
 })
+
+export const uploadFile = (url, header, file) =>
+  new Promise((resolve, reject) => {
+    var formData = new FormData();
+    formData.append("file", file);
+    axios
+      .post(url, formData, { headers: header })
+      .then(function (response) {
+        const postData = {
+          responseCode: response.status,
+          responseBody: response.data.body,
+        };
+        resolve(postData);
+      })
+      .catch(function (error) {
+        const errorData = createErrorResponse(error);
+        resolve(errorData);
+      });
+  });

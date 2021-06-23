@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import UserIcon from "../../images/user-icon.png";
 import CamIcon from "../../images/cam-icon.png"
-import { callPatch, callGet } from "../../service/NetworkService";
+import { callPatch, callGet, uploadFile } from "../../service/NetworkService";
 import "./Profile.css";
 import {
   API_PROFILE_UPDATE,
   API_FETCH_PROFILE,
+  API_UPDATE_PROFILE_PICTURE
 } from "../../constants/ApiConstants.js";
 import { useAlert } from "react-alert";
 import { createAuthHeader } from "../../utility/RequestUtil";
 
 function Profile() {
   const alert = useAlert();
+  const hiddenFileInput = useRef(null);
+  const [selectedFile, setSelectedFile] = useState();
+	const [isSelected, setIsSelected] = useState(false);
   const [inputFields, setInputFields] = useState({
     firstName: "",
     lastName: "",
@@ -51,7 +55,6 @@ function Profile() {
       lastName: inputFields.lastName,
       email: inputFields.email,
     });
-    // console.log(firstName)
   };
 
   const handleLastNameChange = (event) => {
@@ -62,18 +65,7 @@ function Profile() {
     });
   };
 
-  const buildFileSelector = () => {
-    const fileSelector = document.createElement('input');
-    fileSelector.setAttribute('type', 'file');
-    fileSelector.setAttribute('multiple', 'multiple');
-    fileSelector.click();
-  }
 
-  const handleProfilePicUpdate = (event) => {
-    alert.error("Upload profile picture")
-    event.preventDefault();
-    buildFileSelector();
-  }
 
   const handleProfileSubmit = async () => {
     console.log(
@@ -97,6 +89,27 @@ function Profile() {
       alert.error("Profile update failed");
     }
   };
+  
+  const callUploadImageApi = async () => {
+    const apiData = await uploadFile(API_UPDATE_PROFILE_PICTURE, createAuthHeader, selectedFile);
+    if (apiData.responseCode === 200) {
+      alert.success("Profile picture updated");
+    } else {
+      console.log(apiData.responseBody)
+      alert.error("Profile picture update failed");
+    }
+  }
+
+  const imageChangeHandler = (event) => {
+    setSelectedFile(event.target.files[0]);
+		setIsSelected(true);
+    callUploadImageApi();
+    console.log("File selected " + isSelected)
+  }
+
+  const handleImageSelection = (event) => {
+      hiddenFileInput.current.click();
+  }
 
   return (
     <>
@@ -111,8 +124,9 @@ function Profile() {
             <img
               src={CamIcon}
               className="cam-icon"
-              onClick={handleProfilePicUpdate}
+              onClick={handleImageSelection}
             ></img>
+            <input type="file" style={{display: 'none'}} onChange={imageChangeHandler} ref={hiddenFileInput}></input>
           </div>
         </div>
         <div className="user-detail-container">
